@@ -1,5 +1,7 @@
 public class main {
     public static void main(String[] args){
+        unittest test = new unittest();
+        test.testUtils();
         UtilsA utils = new UtilsA();
 
 //        System.out.println("Hello world");
