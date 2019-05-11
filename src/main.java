@@ -66,3 +66,14 @@ public class main {
 //        double [] deltaWeights;
 //    }
 }
+
+
+/*
+*
+    Small values give a learning process that converges quickly at the cost of noise in the training process.
+    Large values give a learning process that converges slowly with accurate estimates of the error gradient.
+
+Tip 1: A good default for batch size might be 32.
+
+    … [batch size] is typically chosen between 1 and a few hundreds, e.g. [batch size] = 32 is a good default
+    *  value, with values above 10 taking advantage of the speedup of matrix-matrix products over matrix-vector products.*/

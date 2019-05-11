@@ -11,10 +11,9 @@ public class UtilsA {
 
     }
 
-    //TODO
-    public double negativeLogLikelyhood ()
+    public double negativeLogLikelihood (double x)
     {
-        return 0.0;
+        return -1*(Math.log(x));
     }
 
     public double sigmoid(double x) {
