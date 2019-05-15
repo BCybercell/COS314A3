@@ -3,15 +3,18 @@ public class main {
         unittest test = new unittest();
         test.testUtils();
         UtilsA utils = new UtilsA();
-
-//        System.out.println("Hello world");
-//        double arr [] = {1, 2, 3, 4, 5, 6};
-//        double e []= utils.softMax(arr);
-//        for (double x : e){
-//            System.out.println(x);
-//        }
+        double [][] inputs = new double[1][784];
+        double [][] outputs = new double[1][10];
 
 
+        double [][] weights1 = new double[784][100];
+        double [][] weights2 = new double[100][50];
+        double [][] weights3 = new double[50][10];
+        double [][] tempH1 = utils.multiplyMatrices(inputs,weights1,inputs.length,inputs[0].length,weights1[0].length);
+//        utils.displayProduct(temp);
+        double [][] tempH2 = utils.multiplyMatrices(tempH1,weights2,tempH1.length,tempH1[0].length,weights2[0].length);
+        outputs = utils.multiplyMatrices(tempH2,weights3,tempH2.length,tempH2[0].length,weights3[0].length);
+        utils.displayProduct(outputs);
         /*
          * NOTES:
          *   Input Neuron:
@@ -32,6 +35,8 @@ public class main {
         //PRE STEP
         //Scale values to 0-1
 
+        }
+
         //STEP 1; Weighted sum of inputs
         // ans = x1w1 + x2w2 + ...
         // where x is input value and w is its weight
@@ -43,8 +48,7 @@ public class main {
         //STEP 3
         //Calculate diff between expected output and actual output
         //
-        System.out.println(utils.sigmoid(5.0));
-    }
+
 
 
     /*
