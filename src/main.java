@@ -1,8 +1,15 @@
+import java.util.List;
+
 public class main {
     public static void main(String[] args){
+        //Initial setup
         unittest test = new unittest();
         test.testUtils();
         UtilsA utils = new UtilsA();
+        //Get cvs data
+        List<Image> imagesTrain= utils.readCVS("COS314A3/fashionmnist/fashion-mnist_train.csv");
+//        System.out.println(imagesTrain.get(0).getOutput());
+//        utils.displayProduct(imagesTrain.get(0).getInput());
         double [][] inputs = new double[1][784];
         double [][] outputs = new double[1][10];
 
