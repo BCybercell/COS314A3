@@ -67,7 +67,7 @@ public class UtilsA {
      *       Array of probabilities for each element
      * */
     public double [] softMax(double[] netOk){
-        double eValues [] = new double[netOk.length];
+        double [] eValues  = new double[netOk.length];
         double totalE = 0.0;
         for (int i = 0; i<netOk.length;i++){
             eValues[i]= Math.exp(netOk[i]);

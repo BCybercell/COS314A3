@@ -8,13 +8,11 @@ public class main {
         UtilsA utils = new UtilsA();
         //Get cvs data
         List<Image> imagesTrain= utils.readCVS("COS314A3/fashionmnist/fashion-mnist_train.csv");
-//        System.out.println(imagesTrain.get(0).getOutput());
-//        utils.displayProduct(imagesTrain.get(0).getInput());
-        double [][] inputs = new double[1][784];
+        double [][] inputs = new double[1][785];
         double [][] outputs = new double[1][10];
 
 
-        double [][] weights1 = new double[784][100];
+        double [][] weights1 = new double[785][100];
         double [][] weights2 = new double[100][50];
         double [][] weights3 = new double[50][10];
         double [][] tempH1 = utils.multiplyMatrices(inputs,weights1,inputs.length,inputs[0].length,weights1[0].length);
