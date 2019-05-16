@@ -1,4 +1,15 @@
 import java.lang.Math;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+import java.util.Random;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.ArrayList;
 
 public class UtilsA {
 
@@ -16,7 +27,7 @@ public class UtilsA {
         return -1*(Math.log(x));
     }
 
-    public double negativeLogLikelihood(double [][] y, double[][] o) {
+    public double negativeLogLikelihood(double [][] y, double[][] o) { // y = expected output, o = output
         int d;
         int k;
         int D;
@@ -56,7 +67,7 @@ public class UtilsA {
      *       Array of probabilities for each element
      * */
     public double [] softMax(double[] netOk){
-        double eValues [] = new double[netOk.length];
+        double [] eValues  = new double[netOk.length];
         double totalE = 0.0;
         for (int i = 0; i<netOk.length;i++){
             eValues[i]= Math.exp(netOk[i]);
@@ -129,5 +140,48 @@ public class UtilsA {
             }
             System.out.println();
         }
+    }
+
+    public List<Image> readCVS(String fileName){
+        List<Image> images = new ArrayList<>();
+        Path pathToFile = Paths.get(fileName);
+
+        // create an instance of BufferedReader
+        // using try with resource, Java 7 feature to close resources
+        try (BufferedReader br = Files.newBufferedReader(pathToFile,
+                StandardCharsets.US_ASCII)) {
+
+            // read the first line from the text file
+            String line = br.readLine();
+            line = br.readLine();
+            // loop until all lines are read
+            while (line != null) {
+
+                // use string.split to load a string array with the values from
+                // each line of
+                // the file, using a comma as the delimiter
+                String[] attributes = line.split(",");
+                int len = attributes.length;
+                double [] input = new double[len];
+                double output =  Double.parseDouble(attributes[0]);
+                for (int i = 1; i <len ; i++) {
+                    input[i-1] = Double.parseDouble(attributes[i]);
+                }
+
+                Image image = new Image(input, output);
+
+                // adding book into ArrayList
+                images.add(image);
+
+                // read next line before looping
+                // if end of file reached, line would be null
+                line = br.readLine();
+            }
+
+        } catch (IOException ioe) {
+            ioe.printStackTrace();
+        }
+
+        return images;
     }
 }

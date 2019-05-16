@@ -1,13 +1,18 @@
+import java.util.List;
+
 public class main {
     public static void main(String[] args){
+        //Initial setup
         unittest test = new unittest();
         test.testUtils();
         UtilsA utils = new UtilsA();
-        double [][] inputs = new double[1][784];
+        //Get cvs data
+        List<Image> imagesTrain= utils.readCVS("COS314A3/fashionmnist/fashion-mnist_train.csv");
+        double [][] inputs = new double[1][785];
         double [][] outputs = new double[1][10];
 
 
-        double [][] weights1 = new double[784][100];
+        double [][] weights1 = new double[785][100];
         double [][] weights2 = new double[100][50];
         double [][] weights3 = new double[50][10];
         double [][] tempH1 = utils.multiplyMatrices(inputs,weights1,inputs.length,inputs[0].length,weights1[0].length);
