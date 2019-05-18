@@ -184,4 +184,8 @@ public class UtilsA {
 
         return images;
     }
+
+    public void assignInputsToLayer(Layer layer, Image image){
+        layer.assignInputsToNeurons(image.getInput());
+    }
 }
