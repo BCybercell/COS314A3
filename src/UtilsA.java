@@ -70,7 +70,7 @@ public class UtilsA {
         double [] eValues  = new double[netOk.length];
         double totalE = 0.0;
         for (int i = 0; i<netOk.length;i++){
-            eValues[i]= Math.exp(netOk[i]);
+            eValues[i]= Math.exp(netOk[i]/1000); //temp added
             totalE += eValues[i];
         }
         for (int i = 0; i < eValues.length; i++)
@@ -183,5 +183,17 @@ public class UtilsA {
         }
 
         return images;
+    }
+
+    public void assignInputsToLayer(Layer layer, Image image){
+        layer.assignInputsToNeurons(image.getInput());
+    }
+
+    public void assignRandomWeights(double[][] weights, int rows, int col){
+        for (int i = 0; i <rows ; i++) {
+            for (int j = 0; j <col ; j++) {
+                weights[i][j] = Math.random();
+            }
+        }
     }
 }
