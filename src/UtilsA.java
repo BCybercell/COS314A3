@@ -24,6 +24,7 @@ public class UtilsA {
 
     public double negativeLogLikelihood (double x)
     {
+        if (x<0) return Math.log(-x);   //TODO temp
         return -1*(Math.log(x));
     }
 
@@ -96,25 +97,87 @@ public class UtilsA {
     }
 
 
-    public double mbGradientDecent(int input,int output){
-        return mbGradientDecent(input, output, 50, 0.0001);
-    }
-
-    public double mbGradientDecent(int input,int output,int batchSize){
-        return mbGradientDecent(input, output, batchSize, 0.0001);
-    }
-
-    public double mbGradientDecent(int input,int output,double learningRate){
-        return mbGradientDecent(input, output, 50, learningRate);
-    }
+//    public double mbGradientDecent(int input,int output){
+//        return mbGradientDecent(input, output, 50, 0.0001);
+//    }
+//
+//    public double mbGradientDecent(int input,int output,int batchSize){
+//        return mbGradientDecent(input, output, batchSize, 0.0001);
+//    }
+//
+//    public double mbGradientDecent(int input,int output,double learningRate){
+//        return mbGradientDecent(input, output, 50, learningRate);
+//    }
 
     //TODO
-    public double mbGradientDecent(int input,int output,int batchSize,double learningRate){
+    public void mbGradientDecent(Layer inputLayer, Layer hiddenLayer1, Layer hiddenLayer2,
+                                   Layer outputLayer, List<Image> images, UtilsA utils,
+                                   int batchSize, double learningRate){
+        double [][] outputs = new double[1][10];
+        double [][] expected = new double[1][10];
+        int count = 0;
+        int stopping =0;
+        for (Image image:images
+             ) {
+            inputLayer.assignInputsToNeurons(image.getInput());
+            inputLayer.processLayer(utils, hiddenLayer1,0);
+            hiddenLayer1.processLayer(utils, hiddenLayer2, 0);
+            hiddenLayer2.processLayer(utils, outputLayer, 1);
+            double [][] tempOut = outputLayer.getInputs();
+            for (int i = 0; i <10 ; i++) {
+                outputs[0][i] += tempOut[0][i];
+            }
+            Long l = Math.round(image.getOutput());
+            expected[0][l.intValue()]++;
+            count ++;
+
+            if (count==batchSize){
+                count =0;
+//                double [][] temp = new double[1][10];
+//                for (int i = 0; i <10 ; i++) {
+//                    temp[0][i] = utils.negativeLogLikelihood(expected[0][i]- outputs[0][i]);
+//                }
+//                utils.displayProduct(temp);
+                double gradientOut = utils.negativeLogLikelihood(expected,outputs);
+                System.out.println(gradientOut);
+                outputLayer.updateWeights(hiddenLayer2, learningRate, gradientOut);
+
+                double gradient = 0.0;
+                double [][] weights = hiddenLayer2.getWeights();
+                for (int i = 0; i < weights.length; i++) {
+                    for (int j = 0; j < weights[0].length; j++) {
+                        gradient += weights[i][j] * gradientOut;
+                    }
+                }
+                gradientOut = utils.negativeLogLikelihood(gradient);
+               // hiddenLayer2.updateWeights(hiddenLayer1, learningRate, gradientOut);
 
 
+                gradient = 0.0;
+                weights = hiddenLayer1.getWeights();
+                for (int i = 0; i < weights.length; i++) {
+                    for (int j = 0; j < weights[0].length; j++) {
+                        gradient += weights[i][j] * gradientOut;
+                    }
+                }
+                gradientOut = utils.negativeLogLikelihood(gradient);
+               // hiddenLayer1.updateWeights(inputLayer, learningRate, gradientOut);
+
+                utils.displayProduct(outputs);
+                utils.displayProduct(expected);
+//                utils.displayProduct(outputLayer.getWeights());
+                outputs = new double[1][10];
+                expected = new double[1][10];
+
+                System.out.println("================================");
+                stopping++;
+                if (stopping==10){
+                    return;
+                }
+            }
+        }
 
 
-        return 0.0;
 
     }
 

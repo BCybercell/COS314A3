@@ -46,14 +46,16 @@ public class main {
         endTime = System.nanoTime();
         timeElapsed = endTime - tempTime;
         System.out.println("[*]Time to create layers : " + (timeElapsed / 1000000)+ "ms");
-
-        inputLayer.processLayer(utils, hiddenLayer1,0);
-        hiddenLayer1.processLayer(utils, hiddenLayer2, 0);
-//        utils.displayProduct(hiddenLayer2.getInputs());
-        hiddenLayer2.processLayer(utils, outputLayer, 1);
-
-        utils.displayProduct(outputLayer.getInputs());
-        System.out.println(imagesTrain.get(1).getOutput());
+        utils.mbGradientDecent(inputLayer, hiddenLayer1, hiddenLayer2,outputLayer,
+                imagesTrain, utils, 1, 0.15);
+//        inputLayer.processLayer(utils, hiddenLayer1,0);
+//        hiddenLayer1.processLayer(utils, hiddenLayer2, 0);
+////        utils.displayProduct(hiddenLayer2.getInputs());
+//        hiddenLayer2.processLayer(utils, outputLayer, 1);
+//
+//        utils.displayProduct(outputLayer.getInputs());
+//        Long l = Math.round(imagesTrain.get(0).getOutput());
+//        System.out.println(utils.negativeLogLikelihood(outputLayer.getInputs()[0][l.intValue()]));
 
 //        double [][] tempH1 = utils.multiplyMatrices(inputs,weights1,inputs.length,inputs[0].length,weights1[0].length);
 ////        utils.displayProduct(temp);

@@ -6,6 +6,7 @@ public class Layer {
             neurons[i] = new Neuron(inputs[0][i]);
         }
         weights = aWeights;
+        deltaWeights = new double[aWeights.length][aWeights[0].length];
     }
 
     public void assignInputsToNeurons(double [][] inputs){
@@ -21,7 +22,7 @@ public class Layer {
             tempInputs[0][i] = neurons[i].getInput();
         }
         double[][] tempWeights = followingLayer.getWeights();
-        double [][] outputs = utils.multiplyMatrices(
+        outputs = utils.multiplyMatrices(
                 tempInputs,tempWeights,tempInputs.length,tempInputs[0].length,tempWeights[0].length);
 
         //apply reLU
@@ -33,7 +34,7 @@ public class Layer {
             }
         }
         else {
-            utils.displayProduct(outputs);
+            //utils.displayProduct(outputs);
             outputs[0] = utils.softMax(outputs[0]);
         }
 
@@ -59,7 +60,49 @@ public class Layer {
         return tempInputs;
     }
 
+    public void updateWeights(Layer prev, double learningRate, double gradient){
+        double [][] oldDeltaWeights = deltaWeights.clone();
+        double [][] newDeltaWeights =deltaWeights.clone();
+        double [][] prevOutputs = prev.getOutputs();
+        for (int i = 0; i <newDeltaWeights.length ; i++) {
+            for (int j = 0; j <newDeltaWeights[0].length ; j++) {
+                newDeltaWeights[i][j] =
+                        learningRate
+                        * prevOutputs[0][j]
+                        * gradient
+                        + 0.2
+                        * oldDeltaWeights[i][j];
+                weights[i][j] += newDeltaWeights[i][j];
+            }
+        }
+        deltaWeights = newDeltaWeights;
+    }
+
+    public void updateWeights(Layer prev, double learningRate, double [][] gradient){
+        double [][] oldDeltaWeights = deltaWeights.clone();
+        double [][] newDeltaWeights =deltaWeights.clone();
+        double [][] prevOutputs = prev.getOutputs();
+        for (int i = 0; i <newDeltaWeights.length ; i++) {
+            for (int j = 0; j <newDeltaWeights[0].length ; j++) {
+                newDeltaWeights[i][j] =
+                        learningRate
+                                * prevOutputs[0][j]
+                                * gradient[0][j]
+                                + 0.2
+                                * oldDeltaWeights[i][j];
+                weights[i][j] += newDeltaWeights[i][j];
+            }
+        }
+        deltaWeights = newDeltaWeights;
+    }
+
+    public double[][] getOutputs() {
+        return outputs;
+    }
+
     private Neuron [] neurons;
     private int size;
-    double [][] weights;
+    private double [][] weights;
+    private double [][] deltaWeights;
+    private double [][] outputs;
 }
